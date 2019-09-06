@@ -55,7 +55,7 @@ do
 			chmod +w "$1" || exit 2
 			cp ${CUISPATH}/Cuis5.0-????.changes "${1%\.image}.changes" || exit 2
 			chmod +w "${1%\.image}.changes" || exit 2
-			ln -s ${CUISPATH}/CuisV5.sources $(dirname "$1")/CuisV5.sources
+			cp ${CUISPATH}/CuisV5.sources $(dirname "$1")/CuisV5.sources
 		fi
 		break
 	fi
