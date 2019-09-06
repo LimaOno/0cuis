@@ -1,0 +1,65 @@
+#!/bin/bash
+if [[ -z "$CUISPATH" ]]
+then
+	echo >&2 "CUISPATH not set"
+	exit 1
+fi
+ARGS=()
+	#options without arguments
+options1="-nomixer -vtlock -vtswitch -compositioninput -fullscreen -fullscreenDirect\
+-headless -iconic -lazy -mapdelbs -nointl -notitle -noxdnd -swapbtn -xasync -xshm -help\
+-timephases -noevents -nohandlers -pollpip -checkpluginwrites -version -warnpid -tracestores\
+-reportheadroom -logscavenge -blockonerror -blockonwarn -exitonwarn -notimer -headless\
+-nodisplay -nomixer -nosound -quartz "
+	#options with one argument
+options2="-display -maxoldspace -cogminjumps -cogmaxlits -tracestores -codesize -pathenc\
+-plugins -textenc -stackpages -leakcheck -eden -breakmnu -breaksel -mmap -memory\
+-encoding -xicfont -optmod -ldtoms -title -glxdebug -display -cmdmod -browserWindow\
+-msproto -msdev -kbmap -fbdev"
+	#options with two arguments
+options3="-browserPipes"
+
+	#Note: CUISPATH indicates where to find the cuis images and changes...
+
+#Iterate over the arguments, shifting them and adding them to the ARGS array
+while test $# -gt 0
+do
+	if [[ "${options1}" == *"$1"* ]]
+	then
+		ARGS+=("$1")
+		shift 1
+		continue
+	elif [[ "${options2}" == *"$1"* ]]
+	then
+		ARGS+=("$1" "$2")
+		shift 2
+		continue
+	elif [[ "${options3}" == *"1"* ]]
+	then
+		ARGS+=("$1" "$2" "$3")
+		shift 3
+		continue
+	elif [[ "--" == "$1" ]]
+	then
+		break
+	elif [[ ${1::1} == "-" ]]
+	then
+		echo "Unknown option $1."
+		exit 3
+	else
+		if [ -f "$1" ]
+		then #Do nothing
+			echo "$1"
+		else
+			cp ${CUISPATH}/Cuis5.0-????.image "$1" || exit 2
+			chmod +w "$1" || exit 2
+			cp ${CUISPATH}/Cuis5.0-????.changes "${1%\.image}.changes" || exit 2
+			chmod +w "${1%\.image}.changes" || exit 2
+			ln -s ${CUISPATH}/CuisV5.sources $(dirname "$1")/CuisV5.sources
+		fi
+		break
+	fi
+done
+command -v squeak >/dev/null 2>&1 || \
+	{ echo >&2 "I require squeak but it's not installed.  Aborting."; exit 1; }
+exec squeak ${ARGS[@]} "$@"
