@@ -24,6 +24,6 @@
     	<environment insert="." mode="append" name="CUISPATH"/>
     </requires>
 
-    <implementation id="." released="2019-09-06" version="0.1-pre2"/>
+    <implementation id="." released="2019-10-07" version="0.1-pre3"/>
   </group>
 </interface>
