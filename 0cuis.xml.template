@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<interface xmlns="http://zero-install.sourceforge.net/2004/injector/interface">
+  <name>0cuis</name>
+  <summary>Launch (and prepare if needed) a Cuis Smalltalk image</summary>
+
+  <description>
+  I know how to start a Cuis image, and to prepare it if necessary if I am given
+  access to a copy of the Cuis Smalltalk distribution
+  </description>
+
+  <homepage>https://github.com/LimaOno/CuisCommand</homepage>
+
+  <feed-for interface="https://limaono.github.io/0cuis.xml"/>
+
+  <group license="OSI Approved :: MIT/X">
+    <command name="run" path="0cuis">
+    </command>
+
+    <requires interface="https://limaono.github.io/OpenSmalltalk.xml">
+    	<environment insert="." mode="append" name="PATH"/>
+    </requires>
+    <requires interface="https://limaono.github.io/CuisSource.xml">
+    	<environment value="." mode="replace" name="CUISPATH" />
+    </requires>
+
+    <implementation arch="*-*" version="{version}">
+      <manifest-digest/>
+      <archive href="https://github.com/LimaOno/0cuis/archive/v{version}.zip"/>
+    </implementation>
+  </group>
+</interface>
