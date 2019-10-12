@@ -22,8 +22,17 @@ placesToLookForPackagesDo: aBlock
 		"Look into local and environment defined paths to search for packages"
 		
 	pathName ifNotNil: [ aBlock value: pathName asFileEntry parent ].
-	(self primEnvironmentAt: #CUISPATH) ifNotNil: [:aString | aString asDirectoryEntry allDirectoriesDo: aBlock].
-	(self primEnvironmentAt: #CUISPACKAGESPATH) ifNotNil: [:aString | (aString findTokens: ':') do: [:each | aBlock value: each asDirectoryEntry] ].
+	(self primEnvironmentAt: #CUISPATH)
+		ifNotNil: [:aString |
+			aString asDirectoryEntry allDirectoriesDo: aBlock ].
+	(self primEnvironmentAt: #CUISPACKAGESPATH)
+		ifNotNil: [:aString |
+			(aString findTokens: ':')
+				do: [:each |
+					| d |
+					d := each asDirectoryEntry.
+					aBlock value: d.
+					d allDirectoriesDo: aBlock ] ].
 ! !
 
 !FeatureRequirement methodsFor: 'private' stamp: 'lo 10/7/2019 19:32:45'!
@@ -86,15 +95,13 @@ do
 		usage
 		exit 3
 	else
-		if [ -f "$1" ]
-		then #Do nothing
-			echo "$1"
-		else
+		if [ ! -f "$1" ]
+		then
 			cp ${CUISPATH}/Cuis5.0-????.image "$1" || exit 2
 			chmod +w "$1" || exit 2
 			cp ${CUISPATH}/Cuis5.0-????.changes "${1%\.image}.changes" || exit 2
 			chmod +w "${1%\.image}.changes" || exit 2
-			cp ${CUISPATH}/CuisV5.sources "$(dirname \"$1\")/CuisV5.sources"
+			cp -n ${CUISPATH}/CuisV5.sources "$(dirname \"$1\")/CuisV5.sources"
 			generateFile "$(dirname \"$1\")/0cuis.pck.st"
 			squeak -headless "$1" -r"$(dirname \"$1\")/0cuis.pck.st" -d"Smalltalk snapshot: true andQuit: true"
 		fi
