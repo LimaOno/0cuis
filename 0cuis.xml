@@ -14,7 +14,8 @@
   <feed-for interface="https://limaono.github.io/0cuis.xml"/>
 
   <group license="OSI Approved :: MIT/X">
-    <command name="run" path="0cuis">
+    <command name="run" path="0cuis.py">
+   		<runner interface="http://repo.roscidus.com/python/python"/>
     </command>
 
     <requires interface="https://limaono.github.io/OpenSmalltalk.xml">
@@ -23,7 +24,11 @@
     <requires interface="https://limaono.github.io/CuisSource.xml">
     	<environment insert="." mode="replace" name="CUISPATH"/>
     </requires>
+    <requires interface="http://repo.roscidus.com/python/python">
+      <version after="3.5"/>
+    </requires>
 
-    <implementation id="." released="2019-10-07" version="0.1-pre3"/>
+
+    <implementation id="." released="2019-10-07" version="0.3-pre1"/>
   </group>
 </interface>
