@@ -13,8 +13,8 @@
   <feed-for interface="https://limaono.github.io/0cuis.xml"/>
 
   <group license="OSI Approved :: MIT/X">
-    <command name="run" path="0cuis">
-		<runner interface="http://repo.roscidus.com/python/python"/>
+    <command name="run" path="0cuis.py">
+      <runner interface="http://repo.roscidus.com/python/python"/>
     </command>
 
     <requires interface="https://limaono.github.io/OpenSmalltalk.xml">
