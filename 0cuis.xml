@@ -29,6 +29,6 @@
     </requires>
 
 
-    <implementation id="." released="2019-10-17" version="0.4-pre1"/>
+    <implementation id="." released="2019-10-17" version="0.4"/>
   </group>
 </interface>
