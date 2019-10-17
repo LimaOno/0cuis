@@ -100,7 +100,7 @@ try:
 				shutil.copy2(os.path.join(cuisPath, 'CuisV5.sources'), sourcesFileName)
 			patchFileName = os.path.join(targetDir, '0cuis.pck.st')
 			writePatch(cuisPatch, patchFileName)
-			subprocess.run(['squeak',  '-headless', current, '-r' + patchFileName,  '-dSmalltalk snapshot: true andQuit: true'], check=True)
+			subprocess.run(['0install', 'run', 'https://limaono.github.io/OpenSmalltalk.xml',  '-headless', current, '-r' + patchFileName,  '-dSmalltalk snapshot: true andQuit: true'], check=True)
 		break
 except StopIteration: usage()
-os.execvp('squeak', sys.argv)
+os.execvp('0install', ['0install', 'run', 'https://limaono.github.io/OpenSmalltalk.xml'] + sys.argv[1:])
