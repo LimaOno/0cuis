@@ -5,6 +5,7 @@ import sys
 import glob
 import re
 import subprocess
+import platform
 
 def die(msg):
 	print(msg, file=sys.stderr)
@@ -22,6 +23,16 @@ def writePatch(patch, filename):
 	f = open(filename, "w")
 	f.write(patch)
 	f.close
+
+def getCuisPaths(path):
+	if platform.architecture()[0] == '32bit':
+		baseName = 'Cuis5.0-????-32'
+	else:
+		baseName = 'Cuis5.0-????'
+	imagePaths = glob.glob(os.path.join(path, baseName + '.image'))
+	len(imagePaths) == 1 or die('Error: missing or multiple entry for ' + baseName + '.image')
+	changesPaths = glob.glob(os.path.join(path, baseName + '.changes'))
+	return ([imagePaths[0], changesPaths[0]])
 
 cuisPatch = """'From Cuis 5.0 of 7 November 2016 [latest update: #3665] on 7 October 2019 at 7:32:57 pm'!
 'Description This package contains support for dependencies injection via an appropriate environment variable, and offloading of version numbering in packages to an external tool.'!
@@ -90,10 +101,11 @@ try:
 		if current[:1] == '-': usage()
 		if not os.path.exists(current):
 			targetDir = os.path.dirname(current)
-			shutil.copy2(glob.glob(os.path.join(cuisPath, 'Cuis5.0-????.image'))[0], current)
+			cuisImagePath, cuisChangesPath = getCuisPaths(cuisPath)
+			shutil.copy2(cuisImagePath, current)
 			os.chmod(current, 0o664)
 			currentChanges = re.sub(r"\.image", ".changes", current)
-			shutil.copy2(glob.glob(os.path.join(cuisPath, 'Cuis5.0-????.changes'))[0], currentChanges)
+			shutil.copy2(cuisChangesPath, currentChanges)
 			os.chmod(currentChanges, 0o664)
 			sourcesFileName = os.path.join(targetDir, 'CuisV5.sources')
 			if not os.path.exists(sourcesFileName):
