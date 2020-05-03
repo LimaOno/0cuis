@@ -21,7 +21,7 @@
     	<environment insert="." mode="append" name="PATH"/>
     </requires>
     <requires interface="https://limaono.github.io/CuisSource.xml">
-    	<environment value="." mode="replace" name="CUISPATH" />
+    	<environment insert="." mode="replace" name="CUISPATH" />
     </requires>
     <requires interface="http://repo.roscidus.com/python/python">
       <version after="3.5"/>
