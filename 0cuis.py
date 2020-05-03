@@ -17,7 +17,8 @@ def usage():
     Requires the squeak vm installed and CUISPATH to point to the
     Cuis-Smalltalk-Dev base repository.
     
-    OPTIONS are the squeak command options.""")
+    OPTIONS are the squeak command options.
+	CUISPATH is """ + os.environ['CUISPATH'])
 
 def writePatch(patch, filename):
 	f = open(filename, "w")
